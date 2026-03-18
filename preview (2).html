@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLYFA Countdown to Kickoff</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, sans-serif;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 12px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #091f40 0%, #123a73 100%);
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 22px 16px;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #f6c343;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      margin: 10px auto 18px auto;
+      max-width: 520px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #e8eef8;
+    }
+
+    .countdown {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto;
+    }
+
+    .unit {
+      background: #ffffff;
+      color: #091f40;
+      border-radius: 14px;
+      min-width: 72px;
+      flex: 1 1 72px;
+      max-width: 95px;
+      padding: 14px 8px;
+      box-sizing: border-box;
+    }
+
+    .value {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .label {
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .submessage {
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #f6c343;
+    }
+
+    .live-banner {
+      display: none;
+      margin-top: 8px;
+      background: #ffffff;
+      color: #091f40;
+      border-radius: 16px;
+      padding: 18px 14px;
+    }
+
+    .live-title {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .live-text {
+      margin: 10px 0 0 0;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 600;
+      color: #123a73;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 18px 12px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .value {
+        font-size: 26px;
+      }
+
+      .live-title {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="eyebrow">MLYFA 2026 Season</div>
+
+      <h1 class="title" id="main-title">Countdown to Kickoff</h1>
+
+      <p class="subtitle" id="main-subtitle">
+        The Blue Devils are getting ready for football season.
+      </p>
+
+      <div class="countdown" id="countdown">
+        <div class="unit">
+          <div class="value" id="days">0</div>
+          <div class="label">Days</div>
+        </div>
+        <div class="unit">
+          <div class="value" id="hours">0</div>
+          <div class="label">Hours</div>
+        </div>
+        <div class="unit">
+          <div class="value" id="minutes">0</div>
+          <div class="label">Minutes</div>
+        </div>
+        <div class="unit">
+          <div class="value" id="seconds">0</div>
+          <div class="label">Seconds</div>
+        </div>
+      </div>
+
+      <div class="submessage" id="submessage">See you on the field.</div>
+
+      <div class="live-banner" id="live-banner">
+        <h2 class="live-title">Season Is Live</h2>
+        <p class="live-text">
+          Football is back. Good luck to all MLYFA players, coaches, and families — let’s go Blue Devils!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Eastern time target:
+      // August 3, 2026 at 6:00 PM Eastern
+      const targetDate = new Date("2026-08-03T18:00:00-04:00").getTime();
+
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+
+      const mainTitleEl = document.getElementById("main-title");
+      const mainSubtitleEl = document.getElementById("main-subtitle");
+      const countdownEl = document.getElementById("countdown");
+      const submessageEl = document.getElementById("submessage");
+      const liveBannerEl = document.getElementById("live-banner");
+
+      function showLiveBanner() {
+        mainTitleEl.textContent = "Football Season Is Here";
+        mainSubtitleEl.textContent = "Welcome to the 2026 MLYFA season.";
+        countdownEl.style.display = "none";
+        submessageEl.style.display = "none";
+        liveBannerEl.style.display = "block";
+      }
+
+      function updateCountdown() {
+        const now = Date.now();
+        const distance = targetDate - now;
+
+        if (distance <= 0) {
+          showLiveBanner();
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        daysEl.textContent = days;
+        hoursEl.textContent = hours;
+        minutesEl.textContent = minutes;
+        secondsEl.textContent = seconds;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
+</body>
+</html>
